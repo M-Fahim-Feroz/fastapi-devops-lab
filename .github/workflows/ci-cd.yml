@@ -88,8 +88,8 @@ jobs:
           echo "Celery started. $(date -u)"
       - name: Run pytest
         env:
-          DATABASE_URL: ${{ env.DATABASE_URL }}
-          REDIS_URL: ${{ env.REDIS_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          REDIS_URL: ${{ secrets.REDIS_URL }}
         run: |
           echo "Tests started at $(date -u)"
           pytest api/tests/tests.py -v --disable-warnings --maxfail=1

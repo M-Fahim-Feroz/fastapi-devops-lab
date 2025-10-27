@@ -35,18 +35,20 @@ def test_task_add_user():
     assert task_id
 
     result = wait_for_task(task_id)
-    assert result["state"] in ("SUCCESS", "PENDING")
+    # In CI/test mode, tasks run eagerly and complete immediately
+    assert result["state"] == "SUCCESS"
     assert result["state"] != "TIMEOUT"
 
 
 def test_task_add_weather():
     """Ensure weather task works end-to-end."""
     response = client.post("/weathers/erzincan")
-    assert response.status_code == 200
+    assert response.status_code == 201
 
     task_id = response.json()["task_id"]
     assert task_id
 
     result = wait_for_task(task_id)
-    assert result["state"] in ("SUCCESS", "PENDING")
+    # In CI/test mode, tasks run eagerly and complete immediately
+    assert result["state"] == "SUCCESS"
     assert result["state"] != "TIMEOUT"
