@@ -3,7 +3,7 @@ import time
 import requests
 from celery import Celery
 from crud import crud_add_user, crud_add_weather
-from schemas import UserIn, WeatherIn
+from models import UserIn, WeatherIn
 
 app = Celery(
     "tasks",

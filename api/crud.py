@@ -1,10 +1,10 @@
 from database import db_context
-from models import User, Weather
-from schemas import UserIn, UserOut, WeatherIn, WeatherOut
+from models import User, Weather, UserIn, UserOut, WeatherIn, WeatherOut
+from sqlmodel import select
 
 
 def crud_add_user(user: UserIn):
-    db_user = User(**user.dict())
+    db_user = User.model_validate(user)
     with db_context() as db:
         db.add(db_user)
         db.commit()
@@ -14,20 +14,19 @@ def crud_add_user(user: UserIn):
 
 def crud_get_user(user_id: int):
     with db_context() as db:
-        user = db.query(User).filter(User.id == user_id).first()
+        user = db.get(User, user_id)
     if user:
-        return UserOut(**user.__dict__)
+        return UserOut.model_validate(user)
     return None
 
 
 def crud_add_weather(weather: WeatherIn):
-    db_weather = Weather(**weather.dict())
+    db_weather = Weather.model_validate(weather)
     with db_context() as db:
-        exist = (
-            db.query(Weather)
-            .filter(Weather.city == weather.city, Weather.date == weather.date)
-            .first()
+        statement = select(Weather).where(
+            Weather.city == weather.city, Weather.date == weather.date
         )
+        exist = db.exec(statement).first()
         if exist:
             return None
         db.add(db_weather)
@@ -38,17 +37,17 @@ def crud_add_weather(weather: WeatherIn):
 
 def crud_get_weather(city: str):
     with db_context() as db:
-        weather = (
-            db.query(Weather)
-            .filter(Weather.city == city)
+        statement = (
+            select(Weather)
+            .where(Weather.city == city)
             .order_by(Weather.date.desc())
             .limit(7)
-            .all()
         )
+        weather = db.exec(statement).all()
     if weather:
         result = []
         for item in weather:
-            result.append(WeatherOut(**item.__dict__))
+            result.append(WeatherOut.model_validate(item))
         return {city: result[::-1]}
     return None
 

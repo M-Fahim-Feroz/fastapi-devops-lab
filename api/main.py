@@ -1,11 +1,18 @@
 from celery.result import AsyncResult
+from dotenv import load_dotenv
 from crud import crud_error_message, crud_get_user, crud_get_weather
 from database import engine
 from fastapi import FastAPI, HTTPException
-from models import Base
+from sqlmodel import SQLModel
 from tasks import task_add_user, task_add_weather
+import os
+from pathlib import Path
 
-Base.metadata.create_all(bind=engine)
+# Load environment variables from parent directory
+env_path = Path(__file__).parent.parent / '.env'
+load_dotenv(dotenv_path=env_path)
+
+SQLModel.metadata.create_all(engine)
 
 app = FastAPI()
 

@@ -1,16 +1,17 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base, sessionmaker
-from sqlalchemy.util.compat import contextmanager
+import os
+from contextlib import contextmanager
+from sqlmodel import create_engine, Session
 
-DATABASE_URL = "postgresql://user:password@database:5432/alpha"
+DATABASE_URL = os.getenv(
+    "DATABASE_URL", 
+    "postgresql://user:password@localhost:5432/alpha"
+)
 
 engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(bind=engine)
-Base = declarative_base()
 
 
 def get_db_session():
-    session = SessionLocal()
+    session = Session(engine)
     try:
         yield session
     finally:

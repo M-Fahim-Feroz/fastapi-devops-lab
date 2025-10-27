@@ -1,21 +1,49 @@
-from database import Base
-from sqlalchemy import Column, Float, Integer, String
+from typing import Optional
+from sqlmodel import Field, SQLModel
 
 
-class User(Base):
+# User Models
+class UserBase(SQLModel):
+    first_name: str
+    last_name: str
+    mail: str
+    age: int
+
+
+class User(UserBase, table=True):
     __tablename__ = "User"
-    id = Column("id", Integer, primary_key=True, autoincrement=True)
-    first_name = Column("first_name", String)
-    last_name = Column("last_name", String)
-    mail = Column("mail", String)
-    age = Column("age", Integer)
+    id: Optional[int] = Field(default=None, primary_key=True)
 
 
-class Weather(Base):
+class UserIn(UserBase):
+    pass
+
+
+class UserOut(SQLModel):
+    first_name: str
+    last_name: str
+
+
+# Weather Models
+class WeatherBase(SQLModel):
+    city: str = Field(index=True)
+    date: str
+    day: str
+    description: str
+    degree: float
+
+
+class Weather(WeatherBase, table=True):
     __tablename__ = "Weather"
-    id = Column("id", Integer, primary_key=True, autoincrement=True)
-    city = Column("city", String, index=True)
-    date = Column("date", String)
-    day = Column("day", String)
-    description = Column("description", String)
-    degree = Column("degree", Float)
+    id: Optional[int] = Field(default=None, primary_key=True)
+
+
+class WeatherIn(WeatherBase):
+    pass
+
+
+class WeatherOut(SQLModel):
+    date: str
+    day: str
+    description: str
+    degree: float
