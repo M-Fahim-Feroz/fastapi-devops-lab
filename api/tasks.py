@@ -22,12 +22,12 @@ if IS_CI or IS_TEST:
 
 # Get URLs from environment variables
 REDIS_URL = os.getenv("CELERY_BROKER_URL")
-DATABASE_URL = os.getenv("POSTGRES_URL")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 if not REDIS_URL:
     raise ValueError("CELERY_BROKER_URL environment variable is not set")
 if not DATABASE_URL:
-    raise ValueError("POSTGRES_URL environment variable is not set")
+    raise ValueError("DATABASE_URL environment variable is not set")
 
 # Pick backend depending on environment
 RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", DATABASE_URL)
