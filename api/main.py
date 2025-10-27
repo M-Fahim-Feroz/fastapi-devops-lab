@@ -5,7 +5,6 @@ from database import engine
 from fastapi import FastAPI, HTTPException
 from sqlmodel import SQLModel
 from tasks import task_add_user, task_add_weather
-import os
 from pathlib import Path
 
 # Load environment variables from parent directory

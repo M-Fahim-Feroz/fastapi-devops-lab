@@ -16,5 +16,5 @@ def get_db_session():
     with Session(engine) as session:
         yield session
 
-# Context manager for explicit session management
+
 db_context = contextmanager(get_db_session)
