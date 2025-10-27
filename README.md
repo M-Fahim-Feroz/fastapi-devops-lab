@@ -1,158 +1,62 @@
-# FastAPI Celery Redis Postgres Docker REST API
+# FastAPI DevOps Lab
 
-### Summary:
+This project is a REST API built with FastAPI, showcasing DevOps practices like containerization, CI/CD, and automated testing. It uses Celery for async tasks, Redis for messaging, and PostgreSQL for data storage.
 
-This is simple REST API project using a modern stack with **[FastAPI](https://fastapi.tiangolo.com/)**.  
-**[Celery](http://www.celeryproject.org/)** for background tasks  
-**[Redis](https://redis.io/)** for the message broker  
-**[PostgreSQL](https://www.postgresql.org/)** for the database  
-**[SqlAlchemy](https://www.sqlalchemy.org/)** for ORM  
-**[Docker](https://docs.docker.com/)** for containerization  
-**[Docker Compose](https://docs.docker.com/compose/)** for defining and running multi-container  
+## Architecture
+- **API Layer**: FastAPI handles HTTP requests.
+- **Background Tasks**: Celery processes tasks asynchronously.
+- **Database**: PostgreSQL stores user and weather data.
+- **Cache/Message Broker**: Redis for Celery and caching.
+- **Containerization**: Docker for consistent environments.
 
-![Summary](img/Summary.png)
+## Project Structure
+- `api/`: Source code (main.py, models.py, etc.)
+- `tests/`: Unit and integration tests.
+- `Dockerfile`: Builds the app container.
+- `docker-compose.yml`: Local multi-container setup.
+- `.github/workflows/ci-cd.yml`: GitHub Actions pipeline.
 
----
+## Setup and Local Development
+1. Clone the repository.
+2. Ensure Docker and Docker Compose are installed.
+3. Run `docker-compose up --build` to start services (API, DB, Redis, Celery).
+4. API will be available at http://localhost:8000.
 
-### Endpoints Table:
+For development, mount volumes in docker-compose.yml to sync code changes.
 
-| Request URL              | Description                                                                                         | HTTP |
-| ------------------------ | --------------------------------------------------------------------------------------------------- | ---- |
-| /users/{count}           | Get random user data from randomuser.me/api and add database using Celery. (Delay = 10 sec) | `POST` |
-| /users/{count}/{delay}   | Get random user data from randomuser.me/api and add database using Celery.                  | `POST` |
-| /users/{user\_id}        | Get user from database.                                                                             | `GET`  |
-| /weathers/{city}         | Get weather data from api.collectapi.com/weather and add database using Celery. (Delay = 10 sec)    | `POST` |
-| /weathers/{city}/{delay} | Get weather data from api.collectapi.com/weather and add database using Celery.                     | `POST` |
-| /weathers/{city}         | Get weather from database.                                                                          | `GET`  |
-| /tasks/{task\_id}        | Get task status.                                                                                    | `GET`  |
+## CI/CD Pipeline
+- **Triggers**: Push/PR to dev/main branches.
+- **Jobs**:
+  - Build: Install deps.
+  - Secuity: Checks for security issues using bandit.
+  - Lint: Code quality checks.
+  - Test: Run pytest with Postgres/Redis services.
+  - Docker: Build and tag image.
+  - Deploy: Push to Docker Hub on main branch only.
+- View status at https://github.com/M-Fahim-Feroz/fastapi-devops-lab/actions.
 
----
+## Deployment
+- Images are pushed to Docker Hub on successful tests.
+- For production, use the latest tag or SHA-tagged image.
+- Secrets (DB creds, Docker Hub) are managed via GitHub Secrets.
 
-### Requirements:
-* Docker and Docker Compose
+## Usage
+Endpoints for managing users and weather data via Celery tasks.
 
-### How to Run:
+### Endpoints
+| URL | Description | Method |
+|-----|-------------|--------|
+| /users/{count} | Queue adding random users | POST |
+| /users/{user_id} | Fetch user | GET |
+| /weathers/{city} | Queue weather fetch | POST |
+| /weathers/{city} | Get weather | GET |
+| /tasks/{task_id} | Task status | GET |
 
-```
-docker-compose up --build
-```
+## Testing
+- Local: `pytest api/tests/tests.py`
+- CI: Automated with services, includes Celery worker.
+- Coverage: Focus on integration tests for async flows.
 
-### Example Requests:
+## Monitoring and Logging
+- Celery logs are captured in CI on failure.
 
----
-
-#### Request:
-```http request
-POST /users/10
-```
-
-#### Response:
-```json
-{
-    "task_id": "44178ce4-6f7a-4a6b-97fd-0de72a055360"
-}
-```
-
----
-
-#### Request:
-```http request
-GET /users/5
-```
-
-#### Response:
-```json
-{
-    "first_name": "Lorenzo",
-    "last_name": "Domínguez"
-}
-```
-
----
-
-#### Request:
-```http request
-POST /weathers/erzincan
-```
-
-#### Response:
-```json
-{
-    "task_id": "46f5f77a-5fd7-41dd-898b-235d5def4a70"
-}
-```
-
----
-
-#### Request:
-```http request
-GET /weathers/erzincan
-```
-
-#### Response:
-```json
-{
-    "erzincan": [
-        {
-            "date": "08.10.2022",
-            "day": "Cumartesi",
-            "description": "orta şiddetli yağmur",
-            "degree": 26.02
-        },
-        {
-            "date": "09.10.2022",
-            "day": "Pazar",
-            "description": "hafif yağmur",
-            "degree": 18.59
-        },
-        {
-            "date": "10.10.2022",
-            "day": "Pazartesi",
-            "description": "açık",
-            "degree": 17.85
-        },
-        {
-            "date": "11.10.2022",
-            "day": "Salı",
-            "description": "açık",
-            "degree": 17.49
-        },
-        {
-            "date": "12.10.2022",
-            "day": "Çarşamba",
-            "description": "kapalı",
-            "degree": 17.42
-        },
-        {
-            "date": "13.10.2022",
-            "day": "Perşembe",
-            "description": "hafif yağmur",
-            "degree": 19.42
-        },
-        {
-            "date": "14.10.2022",
-            "day": "Cuma",
-            "description": "hafif yağmur",
-            "degree": 16.37
-        }
-    ]
-}
-```
-
----
-
-#### Request:
-```http request
-GET /tasks/46f5f77a-5fd7-41dd-898b-235d5def4a70
-```
-
-#### Response:
-```json
-{
-    "state": "SUCCESS"
-}
-```
-
----
-
-**Alperen Cubuk**
