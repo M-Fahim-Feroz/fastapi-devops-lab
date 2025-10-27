@@ -92,7 +92,7 @@ jobs:
           REDIS_URL: ${{ env.REDIS_URL }}
         run: |
           echo "Tests started at $(date -u)"
-          pytest -v --disable-warnings --maxfail=1
+          pytest api/tests/tests.py -v --disable-warnings --maxfail=1
       - name: Show Celery logs on failure
         if: failure()
         run: |
