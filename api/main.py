@@ -1,10 +1,10 @@
 from celery.result import AsyncResult
 from dotenv import load_dotenv
 from api.crud import crud_error_message, crud_get_user, crud_get_weather
-from database import engine
+from api.database import engine
 from fastapi import FastAPI, HTTPException
 from sqlmodel import SQLModel
-from tasks import task_add_user, task_add_weather
+from api.tasks import task_add_user, task_add_weather
 from pathlib import Path
 
 # Load environment variables from parent directory

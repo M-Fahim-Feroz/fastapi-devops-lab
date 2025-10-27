@@ -1,21 +1,20 @@
-import os
+from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
 from contextlib import contextmanager
-from sqlmodel import create_engine, Session
 
-# Load from environment or fall back to default (used in local Docker Compose)
-DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    "postgresql://user:password@database:5432/alpha"
-)
+DATABASE_URL = "postgresql://user:password@database:5432/alpha"
 
-# Create engine
-engine = create_engine(DATABASE_URL, echo=False)
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(bind=engine)
+Base = declarative_base()
 
 
-# Database session generator
 def get_db_session():
-    with Session(engine) as session:
+    session = SessionLocal()
+    try:
         yield session
+    finally:
+        session.close()
 
 
 db_context = contextmanager(get_db_session)
