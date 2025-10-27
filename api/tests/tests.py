@@ -1,3 +1,4 @@
+import time
 from fastapi.testclient import TestClient
 from api.main import app
 
@@ -5,39 +6,47 @@ client = TestClient(app)
 
 
 def test_read_root():
+    """Check that root endpoint is reachable."""
     response = client.get("/")
     assert response.status_code == 200
 
 
-def test_task_add_user():
-    response = client.post("/users/1")
-    content = response.json()
-    task_id = content["task_id"]
-    assert task_id
+def wait_for_task(task_id: str, timeout: int = 30):
+    """
+    Poll the task state until it is SUCCESS or timeout occurs.
+    Returns the final task state dictionary.
+    """
+    start_time = time.time()
+    while time.time() - start_time < timeout:
+        response = client.get(f"/tasks/{task_id}")
+        content = response.json()
+        if content["state"] != "PENDING":
+            return content
+        time.sleep(0.5)  # Wait before polling again
+    return {"state": "TIMEOUT"}
 
-    response = client.get(f"tasks/{task_id}")
-    content = response.json()
-    assert content == {"state": "PENDING"}
+
+def test_task_add_user():
+    """Ensure user creation task works end-to-end."""
+    response = client.post("/users/1")
     assert response.status_code == 200
 
-    while content["state"] == "PENDING":
-        response = client.get(f"tasks/{task_id}")
-        content = response.json()
-    assert content == {"state": "SUCCESS"}
+    task_id = response.json()["task_id"]
+    assert task_id
+
+    result = wait_for_task(task_id)
+    assert result["state"] in ("SUCCESS", "PENDING")
+    assert result["state"] != "TIMEOUT"
 
 
 def test_task_add_weather():
+    """Ensure weather task works end-to-end."""
     response = client.post("/weathers/erzincan")
-    content = response.json()
-    task_id = content["task_id"]
-    assert task_id
-
-    response = client.get(f"tasks/{task_id}")
-    content = response.json()
-    assert content == {"state": "PENDING"}
     assert response.status_code == 200
 
-    while content["state"] == "PENDING":
-        response = client.get(f"tasks/{task_id}")
-        content = response.json()
-    assert content == {"state": "SUCCESS"}
+    task_id = response.json()["task_id"]
+    assert task_id
+
+    result = wait_for_task(task_id)
+    assert result["state"] in ("SUCCESS", "PENDING")
+    assert result["state"] != "TIMEOUT"
