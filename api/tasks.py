@@ -36,6 +36,14 @@ app.conf.update(
     enable_utc=True,
 )
 
+# If running in CI or pytest, execute tasks eagerly
+if os.getenv("GITHUB_ACTIONS") == "true" or os.getenv("PYTEST_CURRENT_TEST"):
+    app.conf.update(
+        task_always_eager=True,
+        task_store_eager_result=True,
+        result_backend="cache+memory://",
+    )
+
 
 # ---------------------------------------------------------------------
 # Celery Tasks
