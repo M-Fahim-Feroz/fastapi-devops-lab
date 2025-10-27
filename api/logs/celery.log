@@ -18,3 +18,11 @@
 [2025-10-27 17:31:05,127: INFO/MainProcess] mingle: searching for neighbors
 [2025-10-27 17:31:06,139: INFO/MainProcess] mingle: all alone
 [2025-10-27 17:31:06,153: INFO/MainProcess] celery@bc349bcb9048 ready.
+[2025-10-27 18:45:22,085: INFO/MainProcess] Connected to redis://redis:6379/0
+[2025-10-27 18:45:22,096: INFO/MainProcess] mingle: searching for neighbors
+[2025-10-27 18:45:23,125: INFO/MainProcess] mingle: all alone
+[2025-10-27 18:45:23,144: INFO/MainProcess] celery@91703f9234d1 ready.
+[2025-10-27 18:55:15,150: INFO/MainProcess] Connected to redis://redis:6379/0
+[2025-10-27 18:55:15,157: INFO/MainProcess] mingle: searching for neighbors
+[2025-10-27 18:55:16,196: INFO/MainProcess] mingle: all alone
+[2025-10-27 18:55:16,228: INFO/MainProcess] celery@2d0e70c265ad ready.
