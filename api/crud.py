@@ -1,5 +1,5 @@
 from api.database import db_context
-from models import User, Weather, UserIn, UserOut, WeatherIn, WeatherOut
+from api.models import User, Weather, UserIn, UserOut, WeatherIn, WeatherOut
 from sqlmodel import select
 
 
