@@ -38,7 +38,7 @@ def read_root():
 # User Endpoints
 # ---------------------------------------------------------------------
 
-@app.post("/users/{count}/{delay}", status_code=200)
+@app.post("/users/{count}/{delay}", status_code=201)
 def add_user(count: int, delay: int):
     """
     Fetch random users and insert them asynchronously using Celery.
@@ -48,7 +48,7 @@ def add_user(count: int, delay: int):
     return {"task_id": task.id}
 
 
-@app.post("/users/{count}", status_code=200)
+@app.post("/users/{count}", status_code=201)
 def add_user_default_delay(count: int):
     """
     Same as /users/{count}/{delay} but uses a default 10s delay.
@@ -69,7 +69,7 @@ def get_user(user_id: int):
 # Weather Endpoints
 # ---------------------------------------------------------------------
 
-@app.post("/weathers/{city}/{delay}", status_code=200)
+@app.post("/weathers/{city}/{delay}", status_code=201)
 def add_weather(city: str, delay: int):
     """
     Fetch weather data for a city and insert asynchronously using Celery.
@@ -79,7 +79,7 @@ def add_weather(city: str, delay: int):
     return {"task_id": task.id}
 
 
-@app.post("/weathers/{city}", status_code=200)
+@app.post("/weathers/{city}", status_code=201)
 def add_weather_default_delay(city: str):
     """
     Same as /weathers/{city}/{delay} but uses a default 10s delay.
