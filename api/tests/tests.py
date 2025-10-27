@@ -29,7 +29,7 @@ def wait_for_task(task_id: str, timeout: int = 30):
 def test_task_add_user():
     """Ensure user creation task works end-to-end."""
     response = client.post("/users/1")
-    assert response.status_code == 200
+    assert response.status_code == 201
 
     task_id = response.json()["task_id"]
     assert task_id
