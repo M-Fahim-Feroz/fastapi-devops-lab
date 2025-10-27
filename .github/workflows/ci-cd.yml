@@ -69,6 +69,9 @@ jobs:
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       REDIS_URL: ${{ secrets.REDIS_URL }}
+      # Ensure Celery broker URL is available during test collection
+      # Use the secret if set, otherwise fall back to the Redis service URL
+      CELERY_BROKER_URL: ${{ secrets.CELERY_BROKER_URL }}
 
     steps:
       - uses: actions/checkout@v4
