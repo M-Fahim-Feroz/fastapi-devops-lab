@@ -7,32 +7,38 @@ from api.models import UserIn, WeatherIn
 
 
 # ---------------------------------------------------------------------
-# Environment-aware configuration
+# Environment-Aware Setup
 # ---------------------------------------------------------------------
 
+# Detect test / CI environment
 IS_CI = os.getenv("GITHUB_ACTIONS") == "true"
-IS_TEST = bool(os.getenv("PYTEST_CURRENT_TEST"))
+IS_TEST = "pytest" in os.getenv("PYTEST_CURRENT_TEST", "")
 
+# Force in-memory eager backend in CI or tests (ensures consistent task results)
+if IS_CI or IS_TEST:
+    os.environ["CELERY_RESULT_BACKEND"] = "cache+memory://"
+    os.environ["CELERY_TASK_ALWAYS_EAGER"] = "True"
+    os.environ["CELERY_TASK_STORE_EAGER_RESULT"] = "True"
+
+# Dynamic host setup
 REDIS_HOST = "localhost" if IS_CI else "redis"
 DB_HOST = "localhost" if IS_CI else "database"
 
+# Build URLs
 REDIS_URL = f"redis://{REDIS_HOST}:6379/0"
 DATABASE_URL = f"db+postgresql://user:password@{DB_HOST}:5432/alpha"
 
-# Choose backend depending on environment
-if IS_CI or IS_TEST:
-    RESULT_BACKEND = "cache+memory://"
-else:
-    RESULT_BACKEND = DATABASE_URL
+# Pick backend depending on environment
+RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", DATABASE_URL)
 
-# Initialize Celery application
+# Initialize Celery
 app = Celery(
     "tasks",
     broker=REDIS_URL,
     backend=RESULT_BACKEND,
 )
 
-# Core Celery config
+# Base Celery config
 app.conf.update(
     task_serializer="json",
     accept_content=["json"],
@@ -41,8 +47,8 @@ app.conf.update(
     enable_utc=True,
 )
 
-# Run synchronously (eager mode) during CI or pytest
-if IS_CI or IS_TEST:
+# Activate eager mode explicitly if flagged
+if os.getenv("CELERY_TASK_ALWAYS_EAGER") == "True":
     app.conf.update(
         task_always_eager=True,
         task_store_eager_result=True,
