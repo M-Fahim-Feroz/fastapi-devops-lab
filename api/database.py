@@ -1,20 +1,22 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base, sessionmaker
+import os
 from contextlib import contextmanager
+from sqlmodel import create_engine, Session
 
-DATABASE_URL = "postgresql://user:password@database:5432/alpha"
+# Detect environment
+IS_CI = os.getenv("GITHUB_ACTIONS") == "true"
 
-engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(bind=engine)
-Base = declarative_base()
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql://user:password@localhost:5432/alpha" if IS_CI
+    else "postgresql://user:password@database:5432/alpha"
+)
+
+engine = create_engine(DATABASE_URL, echo=False)
 
 
 def get_db_session():
-    session = SessionLocal()
-    try:
+    with Session(engine) as session:
         yield session
-    finally:
-        session.close()
 
 
 db_context = contextmanager(get_db_session)
