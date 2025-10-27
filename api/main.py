@@ -1,6 +1,6 @@
 from celery.result import AsyncResult
 from dotenv import load_dotenv
-from crud import crud_error_message, crud_get_user, crud_get_weather
+from api.crud import crud_error_message, crud_get_user, crud_get_weather
 from database import engine
 from fastapi import FastAPI, HTTPException
 from sqlmodel import SQLModel
