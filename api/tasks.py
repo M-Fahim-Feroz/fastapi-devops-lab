@@ -20,13 +20,14 @@ if IS_CI or IS_TEST:
     os.environ["CELERY_TASK_ALWAYS_EAGER"] = "True"
     os.environ["CELERY_TASK_STORE_EAGER_RESULT"] = "True"
 
-# Dynamic host setup
-REDIS_HOST = "localhost" if IS_CI else "redis"
-DB_HOST = "localhost" if IS_CI else "database"
+# Get URLs from environment variables
+REDIS_URL = os.getenv("CELERY_BROKER_URL")
+DATABASE_URL = os.getenv("POSTGRES_URL")
 
-# Build URLs
-REDIS_URL = f"redis://{REDIS_HOST}:6379/0"
-DATABASE_URL = f"db+postgresql://user:password@{DB_HOST}:5432/alpha"
+if not REDIS_URL:
+    raise ValueError("CELERY_BROKER_URL environment variable is not set")
+if not DATABASE_URL:
+    raise ValueError("POSTGRES_URL environment variable is not set")
 
 # Pick backend depending on environment
 RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", DATABASE_URL)

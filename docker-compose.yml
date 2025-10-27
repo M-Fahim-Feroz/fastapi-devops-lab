@@ -13,6 +13,7 @@ services:
       - POSTGRES_USER=${{ secrets.POSTGRES_USER }}
       - POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
       - POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+      - POSTGRES_URL=db+postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@database:5432/${{ secrets.POSTGRES_DB }}
     depends_on:
       - redis
       - database
@@ -30,6 +31,7 @@ services:
       - POSTGRES_USER=${{ secrets.POSTGRES_USER }}
       - POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
       - POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+      - POSTGRES_URL=db+postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@database:5432/${{ secrets.POSTGRES_DB }}
     depends_on:
       - api
       - redis
