@@ -11,6 +11,7 @@ DATABASE_URL = os.getenv(
 # Create engine
 engine = create_engine(DATABASE_URL, echo=False)
 
+
 # Database session generator
 def get_db_session():
     with Session(engine) as session:
