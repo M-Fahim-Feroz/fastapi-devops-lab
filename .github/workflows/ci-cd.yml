@@ -100,7 +100,7 @@ jobs:
           tail -n 200 /tmp/celery.log || true
 
   docker:
-    name: 🐳 Build & Tag Docker Image
+    name: 🐳 Build & Deploy Docker Image
     runs-on: ubuntu-latest
     needs: test
     steps:
@@ -123,13 +123,3 @@ jobs:
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/fastapi-devops-lab:${{ github.sha }}
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/fastapi-devops-lab:latest
 
-  deploy:
-    name: 🚀 Deploy (Conditional)
-    runs-on: ubuntu-latest
-    needs: docker
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - name: Deployment gate
-        run: |
-          echo "Deploy stage reached at $(date -u)."
-          echo "Configure SSH_* secrets later to auto-deploy, or keep Docker Hub push as your 'cloud delivery' proof."
