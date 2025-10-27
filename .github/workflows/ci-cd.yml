@@ -99,7 +99,7 @@ jobs:
           tail -n 200 /tmp/celery.log || true
 
   docker:
-    name: 🐳 Build & Tag Docker Image
+    name: 🐳 Build & Deploy Docker Image
     runs-on: ubuntu-latest
     needs: test
     steps:
@@ -122,22 +122,3 @@ jobs:
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/fastapi-devops-lab:${{ github.sha }}
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/fastapi-devops-lab:latest
 
-  deploy:
-    name: 🐳 Push to Docker Hub
-    runs-on: ubuntu-latest
-    needs: docker
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Push Docker images
-        run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/fastapi-devops-lab:${{ github.sha }}
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/fastapi-devops-lab:latest
