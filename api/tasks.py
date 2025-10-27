@@ -5,29 +5,34 @@ from celery import Celery
 from api.crud import crud_add_user, crud_add_weather
 from api.models import UserIn, WeatherIn
 
+
 # ---------------------------------------------------------------------
 # Environment-aware configuration
 # ---------------------------------------------------------------------
 
-# Detect if we're running inside GitHub Actions
 IS_CI = os.getenv("GITHUB_ACTIONS") == "true"
+IS_TEST = bool(os.getenv("PYTEST_CURRENT_TEST"))
 
-# Set correct hostnames for Postgres and Redis
 REDIS_HOST = "localhost" if IS_CI else "redis"
 DB_HOST = "localhost" if IS_CI else "database"
 
-# Build the full broker and backend URLs
 REDIS_URL = f"redis://{REDIS_HOST}:6379/0"
 DATABASE_URL = f"db+postgresql://user:password@{DB_HOST}:5432/alpha"
+
+# Choose backend depending on environment
+if IS_CI or IS_TEST:
+    RESULT_BACKEND = "cache+memory://"
+else:
+    RESULT_BACKEND = DATABASE_URL
 
 # Initialize Celery application
 app = Celery(
     "tasks",
     broker=REDIS_URL,
-    backend=DATABASE_URL,
+    backend=RESULT_BACKEND,
 )
 
-# Celery configuration
+# Core Celery config
 app.conf.update(
     task_serializer="json",
     accept_content=["json"],
@@ -36,12 +41,11 @@ app.conf.update(
     enable_utc=True,
 )
 
-# If running in CI or pytest, execute tasks eagerly
-if os.getenv("GITHUB_ACTIONS") == "true" or os.getenv("PYTEST_CURRENT_TEST"):
+# Run synchronously (eager mode) during CI or pytest
+if IS_CI or IS_TEST:
     app.conf.update(
         task_always_eager=True,
         task_store_eager_result=True,
-        result_backend="cache+memory://",
     )
 
 
@@ -52,10 +56,7 @@ if os.getenv("GITHUB_ACTIONS") == "true" or os.getenv("PYTEST_CURRENT_TEST"):
 
 @app.task
 def task_add_user(count: int, delay: int):
-    """
-    Fetch random user data and add them to the database.
-    Each result is inserted via the CRUD layer.
-    """
+    """Fetch random user data and add them to the database."""
     url = "https://randomuser.me/api"
     try:
         response = requests.get(f"{url}?results={count}", timeout=10)
@@ -82,10 +83,7 @@ def task_add_user(count: int, delay: int):
 
 @app.task
 def task_add_weather(city: str, delay: int):
-    """
-    Fetch weather data for the specified city from CollectAPI
-    and insert it into the database.
-    """
+    """Fetch weather data for the specified city and insert into database."""
     url = f"https://api.collectapi.com/weather/getWeather?data.lang=tr&data.city={city}"
     headers = {
         "content-type": "application/json",
