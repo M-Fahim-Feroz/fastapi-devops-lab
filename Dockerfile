@@ -11,8 +11,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 # install deps first for cache
-COPY requirements.txt .
-RUN pip install --upgrade pip && pip install -r requirements.txt
+COPY api/requirements.txt .
+RUN pip install --upgrade pip && pip install -r api/requirements.txt
 
 # copy app
 COPY . .
