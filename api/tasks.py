@@ -94,14 +94,14 @@ def task_add_user(count: int, delay: int):
 def task_add_weather(city: str, delay: int):
     """Fetch weather data for the specified city and insert into database."""
     url = f"https://api.collectapi.com/weather/getWeather?data.lang=tr&data.city={city}"
-    # if not WEATHER_API_KEY:
-    #     # Fail fast so developers/CI know the key must be set
-    #     raise ValueError("WEATHER_API_KEY environment variable is not set")
+    if not WEATHER_API_KEY:
+        # Fail fast so developers/CI know the key must be set
+        raise ValueError("WEATHER_API_KEY environment variable is not set")
 
     headers = {
         "content-type": "application/json",
-        "authorization": "apikey 4HKS8SXTYAsGz45l4yIo9P:0NVczbcuJfjQb8PW7hQV48",
-        # "authorization": f"apikey {WEATHER_API_KEY}",
+        # "authorization": "apikey 4HKS8SXTYAsGz45l4yIo9P:0NVczbcuJfjQb8PW7hQV48",
+        "authorization": f"apikey {WEATHER_API_KEY}",
     }
 
     try:

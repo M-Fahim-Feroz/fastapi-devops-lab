@@ -72,7 +72,7 @@ jobs:
       # Ensure Celery broker URL is available during test collection
       # Use the secret if set, otherwise fall back to the Redis service URL
       CELERY_BROKER_URL: ${{ secrets.CELERY_BROKER_URL }}
-      # WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
+      WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
       
 
     steps:
