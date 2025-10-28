@@ -38,6 +38,7 @@ def read_root():
 # User Endpoints
 # ---------------------------------------------------------------------
 
+
 @app.post("/users/{count}/{delay}", status_code=201)
 def add_user(count: int, delay: int):
     """
