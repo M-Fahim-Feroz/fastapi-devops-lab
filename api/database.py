@@ -5,11 +5,7 @@ from sqlmodel import create_engine, Session
 # Detect environment
 IS_CI = os.getenv("GITHUB_ACTIONS") == "true"
 
-DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    "postgresql://user:password@localhost:5432/alpha" if IS_CI
-    else "postgresql://user:password@database:5432/alpha"
-)
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 engine = create_engine(DATABASE_URL, echo=False)
 
