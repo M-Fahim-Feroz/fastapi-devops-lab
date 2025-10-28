@@ -32,7 +32,7 @@ app = FastAPI()
 def read_root():
     """Root endpoint for health check."""
     return {"Alperen": "Cubuk"}
-
+#c
 
 # ---------------------------------------------------------------------
 # User Endpoints
