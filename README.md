@@ -19,8 +19,12 @@ This project is a REST API built with FastAPI, showcasing DevOps practices like 
 ## Setup and Local Development
 1. Clone the repository.
 2. Ensure Docker and Docker Compose are installed.
-3. Run `docker-compose up --build` to start services (API, DB, Redis, Celery).
-4. API will be available at http://localhost:8000.
+3. Copy the `.env.example` file to `.env` and fill in any required credentials:
+   ```bash
+   cp .env.example .env
+   ```
+4. Run `docker compose up --build` to start services (API, DB, Redis, Celery).
+5. API will be available at http://localhost:8000.
 
 For development, mount volumes in docker-compose.yml to sync code changes.
 
