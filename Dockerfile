@@ -15,9 +15,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
+# Explicitly upgrade packaging tools inside the virtual environment
+RUN pip install --upgrade pip setuptools wheel
+
 # Install Python dependencies
 COPY requirements.txt .
-RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Stage 2: Runtime
 FROM python:3.10-slim
@@ -28,6 +31,10 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONPATH="/usr/src/app"
 
 WORKDIR /usr/src/app
+
+# Remove globally installed vulnerable packaging tools from the base image
+# (We rely entirely on the secure versions in the virtual environment)
+RUN python -m pip uninstall -y pip setuptools wheel || true
 
 # Install runtime dependencies for psycopg2
 RUN apt-get update && apt-get install -y --no-install-recommends \
