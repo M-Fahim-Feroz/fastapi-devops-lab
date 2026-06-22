@@ -35,7 +35,7 @@ For development, mount volumes in docker-compose.yml to sync code changes.
   - Secuity: Checks for security issues using bandit.
   - Lint: Code quality checks.
   - Test: Run pytest with Postgres/Redis services.
-  - Docker: Build and tag image.
+  - Docker: Build, tag, and run Trivy vulnerability scanner on the image.
   - Deploy: Push to Docker Hub on main branch only.
 - View status at https://github.com/M-Fahim-Feroz/fastapi-devops-lab/actions.
 
