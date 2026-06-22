@@ -96,11 +96,13 @@ Security is shifted left into the CI/CD pipeline:
 
 ## 10. Screenshots / Proof of Work
 - **CI/CD Pipeline Success:**
-  ![GitHub Actions Pipeline Execution](docs/screenshots/github_actions_pipeline.png)
+  ![GitHub Actions Pipeline Execution](docs/screenshots/github-actions-success.png)
 - **Trivy Vulnerability Scan Pass:**
-  ![Trivy Clean Scan](docs/screenshots/trivy_clean_scan.png)
+  ![Trivy Clean Scan](docs/screenshots/trivy-scan-clean.png)
 - **Local Swagger UI Running:**
-  ![FastAPI Swagger UI](docs/screenshots/fastapi_swagger_ui.png)
+  ![FastAPI Swagger UI](docs/screenshots/swagger-ui.png)
+- **Docker Containers Running:**
+  ![Docker Desktop](docs/screenshots/docker-containers-running.png)
 
 ## 11. Portfolio Scope / Related Projects
 **Important Note:** This specific repository focuses strictly on CI/CD, Docker, local orchestration, and DevSecOps. 
