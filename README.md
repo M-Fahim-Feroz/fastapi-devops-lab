@@ -96,13 +96,13 @@ Security is shifted left into the CI/CD pipeline:
 
 ## 10. Screenshots / Proof of Work
 - **CI/CD Pipeline Success:**
-  ![GitHub Actions Pipeline Execution](docs/screenshots/github-actions-success.png)
+  ![GitHub Actions Pipeline Execution](https://github.com/M-Fahim-Feroz/fastapi-devops-lab/blob/e60ca20fa7e1363634c0f391358d1faf0d706add/docs/screenshots/GitHub%20Actions%20success%20page%20%E2%86%92%20github-actions-success.png)
 - **Trivy Vulnerability Scan Pass:**
-  ![Trivy Clean Scan](docs/screenshots/trivy-scan-clean.png)
+  ![Trivy Clean Scan](https://github.com/M-Fahim-Feroz/fastapi-devops-lab/blob/e60ca20fa7e1363634c0f391358d1faf0d706add/docs/screenshots/Trivy%20scan%20logs%20showing%20clean%20packages%20%E2%86%92%20trivy-scan-clean.png)
 - **Local Swagger UI Running:**
-  ![FastAPI Swagger UI](docs/screenshots/swagger-ui.png)
+  ![FastAPI Swagger UI](https://github.com/M-Fahim-Feroz/fastapi-devops-lab/blob/e60ca20fa7e1363634c0f391358d1faf0d706add/docs/screenshots/FastAPI%20docs%20screenshot%20%E2%86%92%20swagger-ui.png)
 - **Docker Containers Running:**
-  ![Docker Desktop](docs/screenshots/docker-containers-running.png)
+  ![Docker Desktop](https://github.com/M-Fahim-Feroz/fastapi-devops-lab/blob/e60ca20fa7e1363634c0f391358d1faf0d706add/docs/screenshots/Docker%20Desktop%20screenshot%20%E2%86%92%20docker-containers-running.png)
 
 ## 11. Portfolio Scope / Related Projects
 **Important Note:** This specific repository focuses strictly on CI/CD, Docker, local orchestration, and DevSecOps. 
