@@ -1,4 +1,4 @@
-# FastAPI Microservice DevOps Pipeline
+# FastAPI Microservice DevSecOps Pipeline
 
 ![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-blue?logo=github-actions)
 ![Python](https://img.shields.io/badge/Python-3.10-3776AB?logo=python&logoColor=white)
