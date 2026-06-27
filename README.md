@@ -52,8 +52,8 @@ graph LR
 ## 6. Local Setup
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/M-Fahim-Feroz/fastapi-devops-lab.git
-    cd fastapi-devops-lab
+    git clone https://github.com/M-Fahim-Feroz/fastapi-devsecops-pipeline.git
+    cd fastapi-devsecops-pipeline
     ```
 2. **Configure environment variables:**
     ```bash
