@@ -1,5 +1,7 @@
 name: FastAPI CI/CD Pipeline
 
+# TODO: For production-grade supply-chain security, pin GitHub Actions to full commit SHAs instead of version tags.
+
 on:
   push:
     branches: [dev, main]

@@ -31,7 +31,7 @@ app = FastAPI()
 @app.get("/")
 def read_root():
     """Root endpoint for health check."""
-    return {"Alperen": "Cubuk"}
+    return {"service": "fastapi-devsecops-pipeline", "owner": "M-Fahim-Feroz", "status": "ok"}
 
 
 # ---------------------------------------------------------------------
