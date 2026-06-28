@@ -104,7 +104,14 @@ Security is shifted left into the CI/CD pipeline:
 - **Docker Containers Running:**
   ![Docker Desktop](https://github.com/M-Fahim-Feroz/fastapi-devops-lab/blob/e60ca20fa7e1363634c0f391358d1faf0d706add/docs/screenshots/Docker%20Desktop%20screenshot%20%E2%86%92%20docker-containers-running.png)
 
-## 11. Portfolio Scope / Related Projects
+## 11. Release & Changelog
+### Suggested First Release
+- **v1.0.0**: Initial portfolio-ready release.
+  - Includes full CI/CD pipeline, security cleanup, and structured deployment documentation.
+- See `CHANGELOG.md` for a complete history of updates.
+- It is highly recommended to leverage [GitHub Releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases) to bundle version tags cleanly.
+
+## 12. Portfolio Scope / Related Projects
 **Important Note:** This specific repository focuses strictly on CI/CD, Docker, local orchestration, and DevSecOps. 
 To keep the portfolio modular and focused:
 - **AWS Deployment & Infrastructure as Code (Terraform)** are intentionally handled in a **separate portfolio project**.
