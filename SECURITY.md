@@ -1,4 +1,4 @@
-# Security Policy
+﻿# Security Policy
 
 ## Supported Versions
 
@@ -6,7 +6,7 @@ This is a portfolio demonstration project.
 
 | Version | Supported |
 |---------|----------|
-| main    | ✅ Yes (latest) |
+| main    |  Yes (latest) |
 
 ## Reporting a Vulnerability
 
