@@ -1,5 +1,7 @@
 # FastAPI Microservice DevSecOps Pipeline
 
+[![CI/CD Pipeline](https://github.com/M-Fahim-Feroz/fastapi-devsecops-pipeline/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/M-Fahim-Feroz/fastapi-devsecops-pipeline/actions/workflows/ci-cd.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 ![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-blue?logo=github-actions)
 ![Python](https://img.shields.io/badge/Python-3.10-3776AB?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
@@ -17,8 +19,19 @@ For hiring managers and technical interviewers, this project proves my ability t
 - Integrate **DevSecOps** principles by embedding code linting (Flake8), static application security testing (Bandit), and container vulnerability scanning (Trivy) directly into the pipeline.
 - Implement reliable local development environments that mirror production constructs.
 
+## Project Highlights
+
+- **Full DevSecOps pipeline** — lint (Flake8), SAST (Bandit), container scan (Trivy), and unit tests all run in CI before any image is pushed to Docker Hub
+- **Multi-service local stack** — Docker Compose orchestrates FastAPI, PostgreSQL, Redis, and Celery worker with health checks and proper dependency ordering
+- **Secure Docker image** — multi-stage build with non-root user, minimal base image, and vulnerability scanning on every commit
+- **Fork-safe CI** — Docker image is built locally with a SHA tag for scanning on PRs; push to Docker Hub only happens on `main` branch merges
+- **Async background tasks** — Celery + Redis worker processes jobs asynchronously, demonstrating production-grade task queue architecture
+- **Automated test coverage** — Pytest integration tests run against a live PostgreSQL and Redis service container in GitHub Actions
+
 ## 3. Architecture
 The application is a REST API that handles asynchronous workloads.
+
+> See the [full architecture diagram](docs/architecture.md) with Mermaid flowcharts.
 
 ```mermaid
 graph LR
